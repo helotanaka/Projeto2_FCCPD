@@ -9,8 +9,6 @@ A solução é composta por **dois containers Docker** que se comunicam entre si
 
 Os dois containers ficam na mesma **rede Docker** para que possam se enxergar pelo nome.
 
-## Arquitetura e decisões técnicas
-
 - **Linguagem**: Python em ambos os lados (cliente e servidor).
 - **Servidor**:
   - Framework: **Flask**.
@@ -24,11 +22,11 @@ Os dois containers ficam na mesma **rede Docker** para que possam se enxergar pe
   - Cada componente (cliente e servidor) tem sua **própria imagem** e container.
   - É criada uma rede do tipo **bridge** (ex: `rede-desafio1`).
   - O servidor tem a porta **8080** exposta (`-p 8080:8080`).
-  - O cliente acessa o servidor usando o hostname **`servidor`** (DNS interno do Docker).
+  - O cliente acessa o servidor usando o hostname **`servidor`**.
 
 ## Funcionamento (fluxo)
 
-1. A rede Docker é criada (ex.: `docker network create rede-desafio1`).
+1. A rede Docker é criada (ex: `docker network create rede-desafio1`).
 2. O container **servidor** é iniciado na rede e começa a escutar em `0.0.0.0:8080`.
 3. O container **client** é iniciado na mesma rede.
 4. Dentro do loop:
