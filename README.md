@@ -19,7 +19,7 @@ Os dois containers ficam na mesma **rede Docker** para que possam se enxergar pe
   - Usa a biblioteca **requests** para consumir o servidor.
   - Faz requisições em loop infinito, com **intervalo de 3 segundos** entre as chamadas.
   - Registra logs em `/var/log/client/app.log`, também montado em um volume local.
-- **Docker:
+- **Docker**:
   - Cada componente (cliente e servidor) tem sua **própria imagem** e container.
   - É criada uma rede do tipo **bridge** chamada `rede-desafio1`.
   - O servidor tem a porta **8080** exposta para o host (`8080:8080`).
