@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  servidor:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: servidor
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./logs/servidor:/var/log/service
+    restart: always
+    networks:
+      - rede-desafio1
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: client
+    depends_on:
+      - servidor
+    volumes:
+      - ./logs/client:/var/log/client
+    restart: always
+    networks:
+      - rede-desafio1
+
+networks:
+  rede-desafio1:
+    driver: bridge
+    name: rede-desafio1
