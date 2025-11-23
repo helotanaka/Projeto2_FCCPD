@@ -1,0 +1,32 @@
+services:
+  banco:
+    image: postgres:15-alpine
+    container_name: postgres-desafio2
+    environment:
+      POSTGRES_USER: eu
+      POSTGRES_PASSWORD: senha
+      POSTGRES_DB: meudb
+    ports:
+      - "5050:5050"
+    volumes:
+      - volume-postgres:/var/lib/postgresql/data
+    networks:
+      - rede-desafio2
+
+  leitor:
+    image: postgres:15-alpine
+    container_name: postgres-leitor
+    depends_on:
+      - banco
+    command: tail -f /dev/null
+    volumes:
+      - volume-postgres:/var/lib/postgresql/data
+    networks:
+      - rede-desafio2
+
+volumes:
+  volume-postgres:
+
+networks:
+  rede-desafio2:
+    driver: bridge
