@@ -228,8 +228,8 @@ Esse fluxo simula um cenário simples de orquestração de containers Docker, on
   8. Saia do container:
      ```bash
      exit
-</details>
 
   9. Remover os containers e volumes:
      ```bash
      docker-compose down -v
+</details>
