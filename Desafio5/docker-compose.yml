@@ -1,0 +1,31 @@
+services:
+  gateway:
+    build:
+      context: ./gateway
+    ports:
+      - "5000:5000"  
+    depends_on:
+      - users
+      - orders
+    networks:
+      - mynetwork
+
+  users:
+    build:
+      context: ./users  
+    ports:
+      - "5001:5001"  
+    networks:
+      - mynetwork
+
+  orders:
+    build:
+      context: ./orders  
+    ports:
+      - "5002:5002"  
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
