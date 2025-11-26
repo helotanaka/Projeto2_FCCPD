@@ -233,3 +233,82 @@ Esse fluxo simula um cenário simples de orquestração de containers Docker, on
      ```bash
      docker-compose down -v
 </details>
+
+# Desafio 4 — Microsserviços Independentes
+
+## Descrição da solução
+
+A solução é composta por dois microsserviços independentes que se comunicam via HTTP, orquestrados pelo Docker Compose:
+
+- **servico1**: microsserviço que fornece uma API REST com uma lista de usuários contendo id, nome e profissão.
+- **servico2**: microsserviço que consome a API do servico1 via requisição HTTP, processa os dados e retorna informações detalhadas combinando os dados recebidos.
+
+Os dois containers ficam na mesma rede para que possam se comunicar diretamente entre si, usando os nomes dos serviços como hostnames.
+
+Serviço 1 (Provedor de Dados):
+- **Tecnologia**: Flask
+- **Função**: Expõe endpoint `/usuarios` que retorna lista de usuários em formato JSON
+- **Porta exposta**: 5000
+- **Dados**: Lista com 3 usuários (Rafael, Jorge, Larissa) com suas respectivas profissões
+
+Serviço 2 (Consumidor de Dados):
+- **Tecnologia**: Flask + Requests
+- **Função**: Consome o endpoint do Serviço 1 via HTTP e processa os dados
+- **Porta exposta**: 5050
+- **Endpoint**: `/usuarios-detalhados` que retorna informações combinadas formatadas
+- **Comunicação**: Faz requisição GET para `http://servico1:5000/usuarios`
+
+## Funcionamento
+
+1. O comando `docker-compose up -d` sobe os dois containers na rede `rede-desafio4`.
+2. O container **servico1** inicia o servidor Flask e fica escutando na porta 5000.
+3. O container **servico2** inicia o servidor Flask e fica escutando na porta 5050.
+4. O **servico2** faz requisições HTTP para o **servico1** através da URL `http://servico1:5000/usuarios`.
+5. O **servico2** processa os dados recebidos e retorna informações formatadas como "Usuário X tem a profissão Y".
+6. Os serviços podem ser acessados via navegador ou ferramentas como `curl` para testar a comunicação.
+7. O comando `docker-compose down` remove todos os containers criados.
+
+Esse fluxo demonstra um cenário real de arquitetura de microsserviços, onde:
+* O **servico1** atua como provedor de dados (API de usuários).
+* O **servico2** atua como consumidor, agregando e processando informações.
+* A comunicação é feita via protocolo HTTP (REST API).
+* Cada serviço é independente e possui seu próprio Dockerfile.
+
+ <details>
+   <summary><h2>Passo a passo</h2></summary>
+
+1. Ir para o diretório do desafio:
+```bash
+cd desafio4
+```
+
+2. Subir os containers:
+```bash
+docker-compose up -d
+```
+
+3. Verificar se os containers estão rodando:
+```bash
+docker ps
+```
+
+4. Testar o Serviço 1 pelo navegador:
+```
+http://localhost:5000/usuarios
+```
+
+5. Testar o Serviço 2 pelo navegador:
+```
+http://localhost:5050/usuarios-detalhados
+```
+
+6. Sair do container:
+```bash
+exit
+```
+
+7. Remover os containers:
+```bash
+docker-compose down
+```
+ </details>
