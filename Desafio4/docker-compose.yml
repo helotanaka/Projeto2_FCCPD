@@ -1,0 +1,19 @@
+services:
+  servico1:
+    build: ./servico1
+    ports:
+      - "5000:5000"
+    networks:
+      - rede-desafio4
+
+  servico2:
+    build: ./servico2
+    ports:
+      - "5050:5050"
+    networks:
+      - rede-desafio4
+    depends_on:
+      - servico1
+
+networks:
+  rede-desafio4:
