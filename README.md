@@ -240,23 +240,23 @@ Esse fluxo simula um cenário simples de orquestração de containers Docker, on
 
 A solução é composta por dois microsserviços independentes que se comunicam via HTTP, orquestrados pelo Docker Compose:
 
-* **servico1**: microsserviço que fornece uma API REST com uma lista de usuários contendo id, nome e profissão.
-* **servico2**: microsserviço que consome a API do servico1 via requisição HTTP, processa os dados e retorna informações detalhadas combinando os dados recebidos.
+- **servico1**: microsserviço que fornece uma API REST com uma lista de usuários contendo id, nome e profissão.
+- **servico2**: microsserviço que consome a API do servico1 via requisição HTTP, processa os dados e retorna informações detalhadas combinando os dados recebidos.
 
 Os dois containers ficam na mesma rede para que possam se comunicar diretamente entre si, usando os nomes dos serviços como hostnames.
 
-### Serviço 1 (Provedor de Dados):
-* **Tecnologia**: Flask
-* **Função**: Expõe endpoint `/usuarios` que retorna lista de usuários em formato JSON
-* **Porta exposta**: 5000
-* **Dados**: Lista com 3 usuários (Rafael, Jorge, Larissa) com suas respectivas profissões
+Serviço 1 (Provedor de Dados):
+- **Tecnologia**: Flask
+- **Função**: Expõe endpoint `/usuarios` que retorna lista de usuários em formato JSON
+- **Porta exposta**: 5000
+- **Dados**: Lista com 3 usuários (Rafael, Jorge, Larissa) com suas respectivas profissões
 
-### Serviço 2 (Consumidor de Dados):
-* **Tecnologia**: Flask + Requests
-* **Função**: Consome o endpoint do Serviço 1 via HTTP e processa os dados
-* **Porta exposta**: 5050
-* **Endpoint**: `/usuarios-detalhados` que retorna informações combinadas formatadas
-* **Comunicação**: Faz requisição GET para `http://servico1:5000/usuarios`
+Serviço 2 (Consumidor de Dados):
+- **Tecnologia**: Flask + Requests
+- **Função**: Consome o endpoint do Serviço 1 via HTTP e processa os dados
+- **Porta exposta**: 5050
+- **Endpoint**: `/usuarios-detalhados` que retorna informações combinadas formatadas
+- **Comunicação**: Faz requisição GET para `http://servico1:5000/usuarios`
 
 ## Funcionamento
 
