@@ -312,3 +312,64 @@ exit
 docker-compose down
 ```
  </details>
+
+# Desafio 5 — Microsserviços com API Gateway
+
+## Descrição da solução
+
+A solução implementa uma arquitetura de microsserviços com API Gateway, composta por três serviços independentes que se comunicam através de uma rede:
+
+- **gateway**: recebe requisições externas e encaminha chamadas para os serviços users e orders.
+- **users**: expõe uma rota HTTP que retorna uma lista de usuários.
+- **orders**: expõe uma rota HTTP que retorna uma lista de pedidos.
+
+Todos os containers estão na mesma rede, permitindo comunicação interna através do nome do serviço.
+
+- **Linguagem**: Python em todos os serviços.
+- **Framework**: Flask para criar as APIs REST.
+- **Biblioteca HTTP**: requests (no gateway) para comunicação entre serviços.
+- **Orquestração**: Docker Compose para gerenciar os múltiplos containers.
+
+## Funcionamento
+
+1. O `docker-compose` cria a rede `mynetwork` e inicia os três containers na ordem correta (primeiro os microsserviços, depois o gateway).
+2. Os microsserviços users e orders iniciam e ficam aguardando requisições em suas respectivas portas (5001 e 5002).
+3. O gateway inicia e expõe os endpoints `/users` e `/orders` na porta 5000.
+4. Quando uma requisição chega ao gateway:
+  - GET /users: O gateway faz uma chamada para `"http://users:5001/users`, recebe os dados e os retorna ao cliente.
+  - GET /orders: O gateway faz uma chamada para `http://orders:5002/orders`, recebe os dados e os retorna ao cliente.
+5. O cliente externo acessa apenas o gateway através de http://localhost:5000, sem conhecimento da arquitetura interna dos microsserviços.
+
+Essa arquitetura demonstra os benefícios do padrão API Gateway:
+
+- **Centralização**: Ponto único de entrada para todos os serviços.
+- **Isolamento**: Os microsserviços não são acessados diretamente pelo cliente.
+- **Flexibilidade**: Novos microsserviços podem ser adicionados sem impactar o cliente.
+- **Abstração**: A complexidade da arquitetura interna fica oculta do consumidor da API.
+
+<details>
+  <summary><h2>Passo a passo</h2></summary>
+
+  1. Ir para o diretório do desafio:
+  ```bash
+  cd desafio5
+  ```
+
+  2. Subir os containers:
+  ```bash
+ docker-compose up --build
+  ```
+
+  3. Vizualizar no navegador:
+  ```bash
+  http://localhost:5000/users
+  ```
+  ```bash
+  http://localhost:5000/orders
+  ```
+
+  4. Remover os containers:
+  ```bash
+  docker-compose down
+  ```
+</details>
